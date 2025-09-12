@@ -39,8 +39,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     role = models.CharField(max_length=50,
                             choices=RoleChoices.choices,
                             default=RoleChoices.ADMIN)
+    has_activated_password = models.BooleanField(default=False)
 
-    # Django required fields
+    #---------------------------------------#
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -54,4 +55,4 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     class Meta:
-        db_table = 'account'
+        db_table = 'user'
