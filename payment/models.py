@@ -1,5 +1,5 @@
+from rest_framework.exceptions import ValidationError
 from django.db import models
-
 from contract.models import Contract
 from property.models import Property
 from tenant.models import Tenant
@@ -19,6 +19,24 @@ class Payment(models.Model):
     paid_at = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def clean(self):
+        """
+        check if the tenant is the same as the contract tenant
+        """
+        print("Entering clean method")
+        if self.type == 'rent' and not self.contract:
+            raise ValidationError('The contract must be set')
+
+        if self.type in ['electricity', 'water'] and not self.property:
+            raise ValidationError(f'The property must be set for {self.type} payment')
+
+        if self.contract and self.contract.tenant != self.tenant:
+            raise ValidationError("Contract tenant must match payment tenant.")
+
+        if self.property and self.contract and self.contract.property != self.property:
+            raise ValidationError("Contract property must match property provided.")
+
 
     def __str__(self):
         return self.tenant.first_name + " " + self.tenant.last_name

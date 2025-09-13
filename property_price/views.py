@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework.generics import ListCreateAPIView
 
-# Create your views here.
+from .models import  PropertyPrice
+from .serializers import PropertyPriceSerializer
+
+class PropertyPriceListCreateView(ListCreateAPIView):
+    queryset = PropertyPrice.objects.all()
+    serializer_class = PropertyPriceSerializer

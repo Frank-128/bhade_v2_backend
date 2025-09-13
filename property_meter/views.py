@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework.generics import ListCreateAPIView
 
-# Create your views here.
+from .models import PropertyMeter
+from .serializers import PropertyMeterSerializer
+
+class PropertyMeterListCreate(ListCreateAPIView):
+    queryset = PropertyMeter.objects.all()
+    serializer_class = PropertyMeterSerializer

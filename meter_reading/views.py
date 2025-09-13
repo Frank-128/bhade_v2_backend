@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from rest_framework.generics import ListCreateAPIView
+from .serializers import MeterReadingSerializer
+from meter_reading.models import MeterReading
 
-# Create your views here.
+
+class MeterReadingListCreateView(ListCreateAPIView):
+    queryset = MeterReading.objects.all()
+    serializer_class = MeterReadingSerializer
